@@ -2,6 +2,7 @@ from moviepy.editor import VideoFileClip, vfx
 import numpy as np
 import cv2
 import os
+import shutil
 
 # Define the functions for enhancements
 def apply_sepia(frame):
@@ -13,7 +14,7 @@ def apply_sepia(frame):
     return sepia_frame
 
 def enhance_brightness_contrast(frame):
-    alpha = 1  # Brightness factor
+    alpha = 0.9  # Brightness factor
     beta = 10    # Contrast factor
     enhanced_frame = cv2.convertScaleAbs(frame, alpha=alpha, beta=beta)
     return enhanced_frame
@@ -22,6 +23,7 @@ def enhance_brightness_contrast(frame):
 # Input and output directories
 input_folder = 'downloads'
 output_folder = 'output'
+achieve_folder = "achieve"
 
 # Create output folder if it doesn't exist
 if not os.path.exists(output_folder):
@@ -34,6 +36,7 @@ for image_file in image_files:
     # Load the image    
     input_path = os.path.join(input_folder, image_file)
     output_path = os.path.join(output_folder, image_file)
+    achieve_path = os.path.join(achieve_folder, image_file)
     print(input_path)
 
     # Load the video clip
@@ -54,4 +57,7 @@ for image_file in image_files:
 
     # Write the final video
     final_clip.write_videofile(output_path, codec='libx264')
+
+    #move file
+    shutil.move(input_path, achieve_path)
 
